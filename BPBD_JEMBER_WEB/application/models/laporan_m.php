@@ -48,6 +48,29 @@ class Laporan_m extends CI_Model
         ];
     }
 
+    public function generateId()
+    {
+        // autonumber
+        $this->db->select('RIGHT(tb_laporan.ID_LPR,7) as ID_LPR', FALSE);
+        $this->db->order_by('ID_LPR', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get('tb_laporan');  //cek dulu apakah ada sudah ada kode di tabel.    
+        if ($query->num_rows() <> 0) {
+            //cek kode jika telah tersedia    
+            $data = $query->row();
+            $kode = intval($data->ID_LPR) + 1;
+        } else {
+            $kode = 1;  //cek jika kode belum terdapat pada table
+        }
+        $batas = str_pad($kode, 7, "0", STR_PAD_LEFT);
+        return $kodetampil = "LPR" . $batas;  //format kode
+    }
+
+    public function setLaporan($data)
+    {
+        $this->db->insert('tb_laporan', $data);
+    }
+
     //tambah data berita
     public function tambahLaporan()
     {
@@ -85,7 +108,7 @@ class Laporan_m extends CI_Model
     private function uploadGambar()
     {
         $config['upload_path']          = './assets/img/profile/';
-        $config['allowed_types']        = 'gif|jpg|png';
+        $config['allowed_types']        = 'gif|jpg|png|jpeg';
         $config['file_name']            = uniqid();
         $config['overwrite']            = true;
         $config['max_size']             = 3024; // 3MB

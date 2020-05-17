@@ -17,54 +17,54 @@
                     <div class="card card-stats">
                         <div class="card-header text-center">Form Pelaporan Bencana</div>
                         <div class="card-body col-md-11">
-                            <form action="" method="post" enctype="multipart/form-data">
-                                <div class="col-md-7 float-left">
-                                    <!-- input nama -->
-                                    <div class="form-group">
-                                        <label for="nama">Nama Pelapor</label>
-                                        <input type="text" name="nama" class="form-control <?php echo form_error('nama') ? 'is-invalid' : '' ?>" id="nama">
-                                        <div class="invalid-feedback">
-                                            <?php echo form_error('nama') ?>
-                                        </div>
-                                    </div>
-                                    <!-- input email -->
-                                    <div class="form-group">
-                                        <label for="email">Email</label>
-                                        <input type="email" name="email" class="form-control <?php echo form_error('email') ? 'is-invalid' : '' ?>" id="email">
-                                        <div class="invalid-feedback">
-                                            <?php echo form_error('email') ?>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="alamat">Alamat Pelapor</label>
-                                        <input type="text" name="alamat" class="form-control <?php echo form_error('alamat') ? 'is-invalid' : '' ?>" id="alamat">
-                                        <div class="invalid-feedback">
-                                            <?php echo form_error('alamat') ?>
-                                        </div>
-                                    </div>
-                                    <!-- input combobox kategori berdasarkan db -->
-                                    <div class="form-group">
-                                        <label for="kategori">Kategori Bencana</label>
-                                        <select class="form-control" id="kategori" name="kategori">
-                                            <?php foreach ($tb_kategori as $kategori) : ?>
-                                                <option value="<?php echo $kategori['ID_KTR'] ?>"><?php echo $kategori['KATEGORI'] ?></option>
-                                            <?php endforeach ?>
-                                        </select>
+                            <?= form_open_multipart('laporan'); ?>
+                            <div class="col-md-7 float-left">
+                                <!-- input nama -->
+                                <div class="form-group">
+                                    <label for="nama">Nama Pelapor</label>
+                                    <input type="text" name="nama" class="form-control <?php echo form_error('nama') ? 'is-invalid' : '' ?>" id="nama">
+                                    <div class="invalid-feedback">
+                                        <?php echo form_error('nama') ?>
                                     </div>
                                 </div>
-                                <div class="col-md-5 float-right">
-                                    <div class="from-group col-md-11">
-                                        <!-- gambar priview -->
-                                        <div class="imgWrap pb-2">
-                                            <img src="<?php echo base_url('assets/img/gambar_berita/default.png') ?>" id="imgView" class="card-img-top img-fluid">
-                                        </div>
-                                        <!-- input gambar -->
-                                        <div class="custom-file">
-                                            <input type="file" id="inputFile" name="GAMBAR" class="imgFile custom-file-input" aria-describedby="inputGroupFileAddon01">
-                                            <label class="custom-file-label" name="GAMBAR" for="inputFile">Upload Foto Lokasi Bencana...</label>
-                                        </div>
+                                <!-- input email -->
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" name="email" class="form-control <?php echo form_error('email') ? 'is-invalid' : '' ?>" id="email">
+                                    <div class="invalid-feedback">
+                                        <?php echo form_error('email') ?>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="alamat">Alamat Pelapor</label>
+                                    <input type="text" name="alamat" class="form-control <?php echo form_error('alamat') ? 'is-invalid' : '' ?>" id="alamat">
+                                    <div class="invalid-feedback">
+                                        <?php echo form_error('alamat') ?>
+                                    </div>
+                                </div>
+                                <!-- input combobox kategori berdasarkan db -->
+                                <div class="form-group">
+                                    <label for="kategori">Kategori Bencana</label>
+                                    <select class="form-control" id="kategori" name="kategori">
+                                        <?php foreach ($tb_kategori as $kategori) : ?>
+                                            <option value="<?php echo $kategori['ID_KTR'] ?>"><?php echo $kategori['KATEGORI'] ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5 float-right">
+                                <div class="from-group col-md-11">
+                                    <!-- gambar priview -->
+                                    <div class="imgWrap pb-2">
+                                        <img src="<?php echo base_url('assets/img/gambar_berita/default.png') ?>" id="imgView" class="card-img-top img-fluid">
+                                    </div>
+                                    <!-- input gambar -->
+                                    <div class="custom-file">
+                                        <input type="file" id="inputFile" name="gambar" class="custom-file-input" aria-describedby="inputGroupFileAddon01">
+                                        <label class="custom-file-label" for="inputFile">Upload Foto Lokasi Bencana...</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-12 pb-3">
                             <!-- input tanggal -->
@@ -108,6 +108,13 @@
     <!-- JS MEMANGGIL JS YANG ADA DI includes/js.php -->
     <?php $this->load->view("includes/js.php") ?>
     <?php $this->load->view("admin/includes/js.php") ?>
+
+    <script>
+        $('.custom-file-input').on('change', function() {
+            let fileName = $(this).val().split('\\').pop();
+            $(this).next('.custom-file-label').addClass("selected").html(fileName);
+        });
+    </script>
 </body>
 
 </html>
