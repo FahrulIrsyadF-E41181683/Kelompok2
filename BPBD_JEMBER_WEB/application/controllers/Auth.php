@@ -37,40 +37,39 @@ class Auth extends CI_Controller
     private function _login()
     {
         $username = $this->input->post('username'); // Menangkap data username yang diinputkan di form login
-        $password = $this->input->post('password'); // Menangkap data password yang diinputkan di form login
+        $password = md5($this->input->post('password')); // Menangkap data password yang diinputkan di form login
 
         // Kemudian data yang diterima dan ditangkap di jadikan array agar dapat dikembalikan lagi ke model m_login
-        $where = array(
-            'username' => $username,
-            'password' => md5($password) // Disini kita menggunakan MD5 sebagai enkripsi password
-        );
 
         // Cek ketersediaan username dan password user dengan fungsi cek login yang ada di model->m_login
-        $cek = $this->m_login->cek_login("tb_user", $where)->num_rows();
-
+        $cek = $this->m_login->cek_login("tb_user", ['USERNAME' => $username])->row_array();
+        $user = $this->db->get_where('tb_user', ['USERNAME' => $username])->row_array();
         // Jika hasil cek ternyata menyatakan username dan password tersedia maka dibuat session berisi username dan status login, kemudian akan di arahkan ke view->dashboard.
-        if ($cek > 0) {
-
-            $data_session   = array(
-                'nama'      =>  $username,
-                'status'    =>  "login"
-            );
-
-            $this->session->set_userdata($data_session);
-            // Bisa diganti ke view lain
-            redirect(base_url("beranda"));
-
-            // Jika ternyata username dan password yang diinputkan tidak tersedia maka akan tampil alert 
+        if ($user) {
+            //jika user aktif
+            if ($user['STATUS'] == 1) {
+                //cek Password
+                if ($password == $user['PASSWORD']) {
+                    $data = [
+                        'ID_USR' => $user['ID_USR'],
+                        'ROLE' => $user['ROLE']
+                    ];
+                    $this->session->set_userdata($data);
+                    if ($user['ROLE'] == 1) {
+                        redirect('beranda');
+                    } else {
+                        redirect('admin/dashboard');
+                    }
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger text-center" role="alert">Password salah!</div>');
+                    redirect('auth');
+                }
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger text-center" role="alert">Akun ini belum di aktivasi!</div>');
+                redirect('auth');
+            }
         } else {
-            $this->session->set_flashdata(
-                'message',
-                '<div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
-                    <strong>Username atau password salah!</strong> Silakan cek ulang!
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                    </div>'
-            );
+            $this->session->set_flashdata('message', '<div class="alert alert-danger text-center" role="alert">Akun tidak terdaftar!</div>');
             redirect('auth');
         }
     }
@@ -125,7 +124,15 @@ class Auth extends CI_Controller
         $this->db->set('NIK', $nik);
         $this->db->where('ID_USR', $id);
         $this->db->update('tb_user');
-
+        $this->session->set_flashdata(
+            'message',
+            '<div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+        <strong>Akun telah berhasil dibuat! Akun anda akan diverifikasi paling lambat 2 hari.</strong><br/>Silakan Login!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+        </div>'
+        );
         redirect('auth');
     }
 
@@ -134,11 +141,6 @@ class Auth extends CI_Controller
         // ID Matters Start
         $this->load->model('m_id');
         $data['id'] = $this->m_id->get_kode();
-        // $dariDB = $this->m_id->cekidusr();
-        // contoh USR00004, angka 3 adalah awal pengambilan angka, dan 7 jumlah angka yang diambil
-        // $nourut = substr($dariDB, 3, 7);
-        // $idusrsekarang = $nourut + 1;
-        // $data = array('id_usr' => $idusrsekarang);
         // ID Matters End
         // Peraturan Form 
         $this->form_validation->set_rules('name', 'Name', 'required|trim', [
@@ -191,17 +193,8 @@ class Auth extends CI_Controller
             ];
 
             $this->db->insert('tb_user', $data);
-            $this->session->set_flashdata(
-                'message',
-                '<div class="alert alert-success alert-dismissible fade show text-center" role="alert">
-            <strong>Akun telah berhasil dibuat! </strong> Silakan Login!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-            </div>'
-            );
             $id = $this->input->post('id_user');
-            $data['usr'] = $this->db->query("SELECT * FROM tb_user WHERE ID_USR='$id'")->num_rows();
+            $data['usr'] = $this->db->query("SELECT * FROM tb_user WHERE ID_USR='$id'")->row_array();
             // $data['usr'] = $this->db->get_where('tb_user', ['ID_USR' => $this->input->post('id_user')])->row_array();
             // $this->session->set_userdata($ver);
             // redirect('auth/verif', $ver);

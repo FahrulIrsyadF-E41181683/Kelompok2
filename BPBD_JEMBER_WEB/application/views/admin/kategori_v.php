@@ -12,115 +12,67 @@
 
     <!-- SIDEBAR MEMANGGIL NAVBAR YANG ADA DI admin/includes/sidebar.php -->
     <?php $this->load->view("admin/includes/navbar.php") ?>
-
     <!-- ISI KONTEN HALAMAN -->
+    <div class="content">
         <div class="row">
           <div class="col-md-12">
-            <div class="card ">
-              <div class="card-header ">
-                <h5 class="card-title">Kategori</h5>
-                <p class="card-category">24 Hours performance</p>
+            <div class="container-fluid">
+                <?php $this->load->view("admin/includes/breadcrumb.php") ?>
               </div>
-              <div class="card-body ">
-    <!-- isien ndek kene cym -->
-                <div class="card shadow mb-4">
-           <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary"> Kategori Bencana </h6>
-               </div>
-           <div class="card-body">
-        <div class="table-responsive">
-          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-            <thead>
-              <tr>
-                <th>Nama</th>
-                <th>Alamat</th>
-                <th>No telepon</th>
-                <th>Jenis Bencana</th>
-                <th>Tanggal</th>
-                <th>Aksi</th>
-              </tr>
-             </thead>
-             <tfoot>
-              <tr>
-                <th>Nama</th>
-                <th>Alamat</th>
-                <th>No telepon</th>
-                <th>Jenis Bencana</th>
-                <th>Tanggal</th>
-                <th>Aksi</th>
-              </tr>
-            </tfoot>
-        <tbody>
-        <?php 
-        foreach ($tb_kategori_v as $tb ) { ?>
-          <tr>
-            <td><?=$tb->nama?></td>
-            <td><?=$tb->alamat?></td>
-            <td><?=$tb->no_telepon?></td>
-            <td><?=$tb->jenis_kelamin?></td>
-            
-              <a class="btn btn-primary" href="<?php echo base_url('admin/kategori_v/edit/'. $tb->id_keterangan); ?>"><i class="fas fa-pencil-alt"></i></a>
-              <a class="btn btn-danger" href="<?php echo base_url('admin/kategori_v/hapus/'. $tb->id_keterangan); ?>"><i class="fas fa-trash"></i></a>
-            </td>
-          </tr>
-        <?php } ?>
-          </tbody>
-        </table>
-        </div>
-    </div>
-    </div>
-
-</div>
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                  </div>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="chart-pie pt-4 pb-2">
-                    <canvas id="myPieChart"></canvas>
-                  </div>
-                  <div class="mt-4 text-center small">
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> Direct
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-success"></i> Social
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> Referral
-                    </span>
-                  </div>
-                </div>
+            <div class="card card-stats">
+            <div class="card-header col-md-12">
+              <!-- TOMBOL TAMBAH -->
+              <div class="col-md-4 float-left">
+              <a href="<?php echo base_url('admin/kategori/tambah') ?>"><button type="button" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Kategori</button></a>
               </div>
             </div>
-          </div>
-          
-      
-              </div>
-              <div class="card-footer ">
-                <hr>
-                <div class="stats">
-                  <i class="fa fa-history"></i> Updated 3 minutes ago
+            <!-- TABEL LIST -->
+              <div class="card-body mb-3">
+                <div class="table-responsive">
+                <table class="table table-striped" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr class="text-center">
+                      <th>Kategori</th>
+                      <th>Keterangan</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <!-- MENGAMBIL DATA DARI DATABASE -->
+                  <tbody>
+                    <?php foreach ($tb as $kategori) : ?>
+                    <tr>
+                    <td class="text-center"><?php echo $kategori['KATEGORI']?></td>
+                    <td class="text-justify" width="600"><?php echo $kategori['KETERANGAN']?></td>
+                    <td class="text-center" width="130">
+					              <a href="" class="btn btn-primary btn-sm rounded-pill m-1"><i class="fas fa-edit"></i></a>
+                        <a href="" class="btn btn-danger btn-sm rounded-pill m-1" onclick="return confirm('yakin?');"><i class="fas fa-trash"></i></a>
+                  	</td>
+                    </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
+                <!-- menampilkan peringatan jika data tidak ada -->
                 </div>
-              </div>
+                <?php echo $this->pagination->create_links();?>
+                <!-- bagian keterangan -->
+                <div class="col-md small">
+                  <h6>Keterangan :</h6>
+                  <table>
+                    <tr>
+                      <td><a href="" class="btn btn-primary btn-sm rounded-pill mr-2"><i class="fas fa-edit"></i></a></td>
+                      <td class="pt-3 pl-3"><p> : Action untuk merubah data berita</p></td>
+                    </tr>
+                    <tr>
+                      <td><a href="" class="btn btn-danger btn-sm rounded-pill"><i class="fas fa-trash"></i></a></td>
+                      <td class="pt-3 pl-3"><p> : Action untuk menghapus data berita</p></td>
+                    </tr>
+                  </table>
+                </div>
+                <!-- batas bagian keterangan -->
+              </div> 
             </div>
-          </div>
-        </div>
-
-
+        </div>      
+    </div>   
         
     <!-- BATAS ISI KONTEN HALAMAN -->
 

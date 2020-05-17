@@ -15,6 +15,7 @@
             <div class="card">
                 <div class="row">
                     <div class="col-md-12">
+                        <?= $this->session->flashdata('message'); ?>
                         <div class="card-header text-white text-center bg-info">
                             Verifikasi Akun
                         </div>
@@ -38,12 +39,7 @@
                                         <input type="text" class="form-control" name="NIK" id="NIK" placeholder="Masukkan NIK anda!">
                                     </div>
                                 </div>
-                                <?php
-
-                                foreach ($usr as $ad) {
-                                ?>
-                                    <input type="text" name="ID_USR" id="ID_USR" value="<?= $ad->ID_USR; ?>">
-                                <?php } ?>
+                                <input type="text" name="ID_USR" id="ID_USR" value="<?= $usr['ID_USR']; ?>" hidden>
                                 <div class="text-right">
                                     <button type="submit" class="btn btn-info">Selesai</button>
                                 </div>
