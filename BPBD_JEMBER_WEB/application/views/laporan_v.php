@@ -10,13 +10,15 @@
 
     <!-- BAGIAN LAPOR BENCANA -->
 
-    <section class="ftco-section">
+    <section style="margin-bottom: 50px;">
         <div class="content">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card card-stats">
-                        <div class="card-header text-center">Form Pelaporan Bencana</div>
-                        <div class="card-body col-md-11">
+            <div class="row justify-content-center mt-0">
+                <div class="col-lg-11 pt-5">
+                    <div class="card shadow p-4 rounded">
+                        <div class="border-bottom text-center border-warning font-m-semi">
+                            <h2>Form Pelaporan Bencana</h2>
+                        </div>
+                        <div class="card-body">
                             <?= form_open_multipart('laporan'); ?>
                             <div class="col-md-7 float-left">
                                 <!-- input nama -->
@@ -104,17 +106,11 @@
 
     <!-- FOOTER MEMANGGIL FOOTER YANG ADA DI includes/footer.php -->
     <?php $this->load->view("includes/footer.php") ?>
-
     <!-- JS MEMANGGIL JS YANG ADA DI includes/js.php -->
     <?php $this->load->view("includes/js.php") ?>
     <?php $this->load->view("admin/includes/js.php") ?>
 
-    <script>
-        $('.custom-file-input').on('change', function() {
-            let fileName = $(this).val().split('\\').pop();
-            $(this).next('.custom-file-label').addClass("selected").html(fileName);
-        });
-    </script>
+
 </body>
 
 </html>

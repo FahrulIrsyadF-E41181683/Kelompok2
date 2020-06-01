@@ -12,9 +12,9 @@ class Laporan extends CI_Controller
 
     function index()
     {
-        
+
         $data["tb_kategori"] = $this->laporan->getKategori();
-        
+
         // validasi data
         $this->form_validation->set_rules($this->laporan->rules());
         if ($this->form_validation->run() == FALSE) {
@@ -42,7 +42,7 @@ class Laporan extends CI_Controller
                 $config['upload_path']          = './assets/img/profile/';
                 // $config['file_name']            = uniqid();
                 // $config['overwrite']            = true;
-    
+
                 $this->load->library('upload', $config);
                 if ($this->upload->do_upload('gambar')) {
                     # code...
@@ -51,7 +51,8 @@ class Laporan extends CI_Controller
                     $this->db->set('GAMBAR', $img);
                 } else {
                     // echo $this->upload->displays_errors();
-                    echo 'Upload GAGAL'; die;
+                    echo 'Upload GAGAL';
+                    die;
                 }
             }
             $this->laporan->setLaporan($input);
