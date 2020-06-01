@@ -56,15 +56,15 @@
                                 </thead>
                                 <!-- MENGAMBIL DATA DARI DATABASE -->
                                 <tbody>
-                                    <?php foreach ($tb_laporan as $berita) : ?>
+                                    <?php foreach ($laporanAll as $berita) : ?>
                                         <tr>
-                                            <td><?php echo $berita['NAMA'] ?></td>
+                                            <td><?php echo $berita['NAMA_USER'] ?></td>
                                             <td><?php echo $berita['KATEGORI'] ?></td>
                                             <td><?php echo $berita['TANGGAL'] ?></td>
                                             <td><?php echo $berita['LOKASI'] ?></td>
                                             <td><img src="<?php echo base_url('assets/img/berita_gambar/' . $berita['GAMBAR']) ?>" width="64"></td>
                                             <!-- merubah status agar mudah dipahami -->
-                                            <td class="text-center"><a href="<?php echo base_url(); ?>admin/daftar_laporan/status/<?php echo $berita['ID_LPR']; ?>/<?php echo $berita['STATUS_BRT']; ?>">
+                                            <td class="text-center"><a href="<?php echo base_url(); ?>admin/daftar_laporan/status/<?php echo $berita['ID_LPR']; ?>/<?php echo $berita['STATUS']; ?>">
                                                     <?php if ($berita['STATUS'] == 1) : ?>
                                                         <span href="" class="btn btn-success btn-circle btn-sm">
                                                             <i class="fas fa-check"></i>
@@ -77,14 +77,41 @@
                                                 </a></td>
                                             <td class="text-center" width="130">
                                                 <a href="<?php echo base_url(); ?>admin/daftar_laporan/hapus/<?php echo $berita['ID_LPR']; ?>" class="btn btn-danger btn-sm rounded-pill m-1 tombol-hapus" onclick="return confirm('yakin?');"><i class="fas fa-trash"></i></a>
-                                                <button class="badge badge-primary" data-toggle="modal" data-target="#modal_detail<?= $id_laporan; ?>">Detail</button>
+                                                <button class="badge badge-primary" data-toggle="modal" data-target="#modal_detail<?= $berita['ID_LPR']; ?>">Detail</button>
                                             </td>
                                         </tr>
+                                    <?php endforeach; ?>
+                                    <?php foreach ($laporanAll2 as $berita) : ?>
+                                        <?php if (!$berita['ID_USR']) : ?>
+                                            <tr>
+                                                <td><?php echo $berita['NAMA'] ?></td>
+                                                <td><?php echo $berita['KATEGORI'] ?></td>
+                                                <td><?php echo $berita['TANGGAL'] ?></td>
+                                                <td><?php echo $berita['LOKASI'] ?></td>
+                                                <td><img src="<?php echo base_url('assets/img/berita_gambar/' . $berita['GAMBAR']) ?>" width="64"></td>
+                                                <!-- merubah status agar mudah dipahami -->
+                                                <td class="text-center"><a href="<?php echo base_url(); ?>admin/daftar_laporan/status/<?php echo $berita['ID_LPR']; ?>/<?php echo $berita['STATUS']; ?>">
+                                                        <?php if ($berita['STATUS'] == 1) : ?>
+                                                            <span href="" class="btn btn-success btn-circle btn-sm">
+                                                                <i class="fas fa-check"></i>
+                                                            </span>
+                                                        <?php else : ?>
+                                                            <span href="" class="btn btn-danger btn-circle btn-sm">
+                                                                <i class="fas fa-times"></i>
+                                                            </span>
+                                                        <?php endif; ?>
+                                                    </a></td>
+                                                <td class="text-center" width="130">
+                                                    <a href="<?php echo base_url(); ?>admin/daftar_laporan/hapus/<?php echo $berita['ID_LPR']; ?>" class="btn btn-danger btn-sm rounded-pill m-1 tombol-hapus" onclick="return confirm('yakin?');"><i class="fas fa-trash"></i></a>
+                                                    <button class="badge badge-primary" data-toggle="modal" data-target="#modal_detail<?= $berita['ID_LPR']; ?>">Detail</button>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
                             <!-- menampilkan peringatan jika data tidak ada -->
-                            <?php if (empty($tb_laporan)) : ?>
+                            <?php if (empty($laporanAll) && empty($laporanAll2)) : ?>
                                 <div class="alert alert-danger alert-dismissible fade show">
                                     <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
                                         <i class="nc-icon nc-simple-remove"></i>

@@ -13,6 +13,14 @@ class Daftar_laporan_m extends CI_Model
             ->result_array();
     }
 
+    public function getAllLaporanyuk()
+    {
+        $this->db->select('*');
+        $this->db->from('tb_laporan');
+        $this->db->join('tb_kategori', 'tb_kategori.ID_KTR=tb_laporan.ID_KTR');
+        return $this->db->get()->result_array();
+    }
+
     // memanggil data dan membatasi data yang ditampilkan
     public function getLaporan($limit, $start, $cari = null)
     {
