@@ -56,13 +56,14 @@
                                 </thead>
                                 <!-- MENGAMBIL DATA DARI DATABASE -->
                                 <tbody>
-                                    <?php foreach ($laporanAll as $berita) : ?>
+                                    <?php foreach ($tb_laporan as $berita) : ?>
+                                        <?php $id = $berita['ID_LPR']; ?>
                                         <tr>
-                                            <td><?php echo $berita['NAMA_USER'] ?></td>
+                                            <td><?php echo $berita['NAMA'] ?></td>
                                             <td><?php echo $berita['KATEGORI'] ?></td>
                                             <td><?php echo $berita['TANGGAL'] ?></td>
                                             <td><?php echo $berita['LOKASI'] ?></td>
-                                            <td><img src="<?php echo base_url('assets/img/berita_gambar/' . $berita['GAMBAR']) ?>" width="64"></td>
+                                            <td><img src="<?php echo base_url('assets/img/berita_gambar/default.png' . $berita['GAMBAR']) ?>" width="64"></td>
                                             <!-- merubah status agar mudah dipahami -->
                                             <td class="text-center"><a href="<?php echo base_url(); ?>admin/daftar_laporan/status/<?php echo $berita['ID_LPR']; ?>/<?php echo $berita['STATUS']; ?>">
                                                     <?php if ($berita['STATUS'] == 1) : ?>
@@ -77,18 +78,19 @@
                                                 </a></td>
                                             <td class="text-center" width="130">
                                                 <a href="<?php echo base_url(); ?>admin/daftar_laporan/hapus/<?php echo $berita['ID_LPR']; ?>" class="btn btn-danger btn-sm rounded-pill m-1 tombol-hapus" onclick="return confirm('yakin?');"><i class="fas fa-trash"></i></a>
-                                                <button class="badge badge-primary" data-toggle="modal" data-target="#modal_detail<?= $berita['ID_LPR']; ?>">Detail</button>
+                                                <button class="btn btn-primary btn-sm rounded-pill m-1 fas fa-info" data-toggle="modal" data-target="#modal_detail<?= $berita['ID_LPR']; ?>"></button>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>
-                                    <?php foreach ($laporanAll2 as $berita) : ?>
+                                    <?php foreach ($tb_laporan2 as $berita) : ?>
                                         <?php if (!$berita['ID_USR']) : ?>
+                                            <?php $id = $berita['ID_LPR']; ?>
                                             <tr>
-                                                <td><?php echo $berita['NAMA'] ?></td>
+                                                <td><?php echo $berita['NAMA_PELAPOR'] ?></td>
                                                 <td><?php echo $berita['KATEGORI'] ?></td>
                                                 <td><?php echo $berita['TANGGAL'] ?></td>
                                                 <td><?php echo $berita['LOKASI'] ?></td>
-                                                <td><img src="<?php echo base_url('assets/img/berita_gambar/' . $berita['GAMBAR']) ?>" width="64"></td>
+                                                <td><img src="<?php echo base_url('assets/img/berita_gambar/default.png' . $berita['GAMBAR']) ?>" width="64"></td>
                                                 <!-- merubah status agar mudah dipahami -->
                                                 <td class="text-center"><a href="<?php echo base_url(); ?>admin/daftar_laporan/status/<?php echo $berita['ID_LPR']; ?>/<?php echo $berita['STATUS']; ?>">
                                                         <?php if ($berita['STATUS'] == 1) : ?>
@@ -103,7 +105,7 @@
                                                     </a></td>
                                                 <td class="text-center" width="130">
                                                     <a href="<?php echo base_url(); ?>admin/daftar_laporan/hapus/<?php echo $berita['ID_LPR']; ?>" class="btn btn-danger btn-sm rounded-pill m-1 tombol-hapus" onclick="return confirm('yakin?');"><i class="fas fa-trash"></i></a>
-                                                    <button class="badge badge-primary" data-toggle="modal" data-target="#modal_detail<?= $berita['ID_LPR']; ?>">Detail</button>
+                                                    <button class="btn btn-primary btn-sm rounded-pill m-1 fas fa-info" data-toggle="modal" data-target="#modal_detail<?= $id; ?>"></button>
                                                 </td>
                                             </tr>
                                         <?php endif; ?>
@@ -111,7 +113,7 @@
                                 </tbody>
                             </table>
                             <!-- menampilkan peringatan jika data tidak ada -->
-                            <?php if (empty($laporanAll) && empty($laporanAll2)) : ?>
+                            <?php if (empty($getLaporan) && empty($getLaporan2)) : ?>
                                 <div class="alert alert-danger alert-dismissible fade show">
                                     <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
                                         <i class="nc-icon nc-simple-remove"></i>
@@ -129,6 +131,12 @@
                                     <td><a href="" class="btn btn-light btn-sm rounded-pill"><i class="nc-icon nc-zoom-split"></i></a></td>
                                     <td class="pt-3 pl-3">
                                         <p> : Untuk melakukan pencarian, masukkan keyword yang ingin dicari lalu tekan "Enter"</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><a href="" class="btn btn-primary btn-sm rounded-pill"><i class="fas fa-info"></i></a></td>
+                                    <td class="pt-3 pl-3">
+                                        <p> : Action untuk menampilkan detail laporan</p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -170,22 +178,19 @@
         <?php $this->load->view("admin/includes/js.php") ?>
 
 </body>
-
-</html>
-
 <!-- Modal Detail -->
 
 <?php
-foreach ($tb_laporan as $i) :
-    $id_laporan = $i['ID_LPR'];
-    $NAMA = $i['NAMA'];
-    $ALAMAT = $i['ALAMAT'];
-    $EMAIL = $i['EMAIL'];
-    $KATEGORI = $i['KATEGORI'];
-    $TANGGAL = $i['TANGGAL'];
-    $DESKRIPSI = $i['DESKRIPSI'];
+foreach ($tb_laporan as $berita) :
+    $id_laporan = $berita['ID_LPR'];
+    $NAMA = $berita['NAMA'];
+    $ALAMAT = $berita['ALAMAT'];
+    $EMAIL = $berita['EMAIL'];
+    $KATEGORI = $berita['KATEGORI'];
+    $TANGGAL = $berita['TANGGAL'];
+    $DESKRIPSI = $berita['DESKRIPSI'];
 ?>
-    <div class="modal fade" id="modal_detail<?= $id_koleksi; ?>" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
+    <div class="modal fade" id="modal_detail<?= $id_laporan; ?>" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -202,44 +207,108 @@ foreach ($tb_laporan as $i) :
                     <div class="form-group">
                         <label class="control-label col-xs-3">ALAMAT PELAPOR</label>
                         <div class="col-xs-8">
-                            <input name="role" value="<?php echo $ALAMAT; ?>" class="form-control" type="text" placeholder="Nama role" required>
+                            <input name="role" value="<?php echo $ALAMAT; ?>" class="form-control" type="text" placeholder="Nama role" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-xs-3">EMAIL PELAPOR</label>
                         <div class="col-xs-8">
-                            <input name="role" value="<?php echo $EMAIL; ?>" class="form-control" type="email" placeholder="Nama role" required>
+                            <input name="role" value="<?php echo $EMAIL; ?>" class="form-control" type="email" placeholder="Nama role" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-xs-3">KATEGORI BENCANA</label>
                         <div class="col-xs-8">
-                            <input name="role" value="<?php echo $KATEGORI; ?>" class="form-control" type="text" placeholder="Nama role" required>
+                            <input name="role" value="<?php echo $KATEGORI; ?>" class="form-control" type="text" placeholder="Nama role" readonly>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-xs-3">TANGGAL</label>
                         <div class="col-xs-8">
-                            <input name="role" value="<?php echo $TANGGAL; ?>" class="form-control" type="text" placeholder="Nama role" required>
+                            <input name="role" value="<?php echo $TANGGAL; ?>" class="form-control" type="text" placeholder="Nama role" readonly>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-xs-3">DESKRIPSI BENCANA</label>
+                        <label class="control-label col-xs-3">Deskripsi Laporan</label>
                         <div class="col-xs-8">
-                            <textarea name="role" value="<?php echo $DESKRIPSI; ?>" class="form-control" required>
+                            <input name="role" value="<?php echo $DESKRIPSI; ?>" class="form-control" type="text" placeholder="Nama role" readonly>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
                     </div>
                 </div>
                 <br>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Tutup</button>
-                    </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Tutup</button>
                 </div>
-                </form>
             </div>
+            </form>
         </div>
     </div>
-    <?php endforeach ?>
+    </div>
+<?php endforeach; ?>
+<?php
+foreach ($tb_laporan2 as $berita) :
+    $id_laporan = $berita['ID_LPR'];
+    $NAMA = $berita['NAMA_PELAPOR'];
+    $ALAMAT = $berita['ALAMAT'];
+    $EMAIL = $berita['EMAIL'];
+    $KATEGORI = $berita['KATEGORI'];
+    $TANGGAL = $berita['TANGGAL'];
+    $DESKRIPSI = $berita['DESKRIPSI'];
+?>
+    <div class="modal fade" id="modal_detail<?= $id_laporan; ?>" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title" id="myModalLabel">Detail Data Laporan Bencana</h3>
+                    <button class="close" type="button" data-dismiss="modal" aria-hidden="true">x</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">NAMA PELAPOR</label>
+                        <div class="col-xs-8">
+                            <input name="id" value="<?php echo $NAMA; ?>" class="form-control" type="text" placeholder="ID role" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">ALAMAT PELAPOR</label>
+                        <div class="col-xs-8">
+                            <input name="role" value="<?php echo $ALAMAT; ?>" class="form-control" type="text" placeholder="Nama role" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">EMAIL PELAPOR</label>
+                        <div class="col-xs-8">
+                            <input name="role" value="<?php echo $EMAIL; ?>" class="form-control" type="email" placeholder="Nama role" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">KATEGORI BENCANA</label>
+                        <div class="col-xs-8">
+                            <input name="role" value="<?php echo $KATEGORI; ?>" class="form-control" type="text" placeholder="Nama role" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">TANGGAL</label>
+                        <div class="col-xs-8">
+                            <input name="role" value="<?php echo $TANGGAL; ?>" class="form-control" type="text" placeholder="Nama role" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-3">Deskripsi Laporan</label>
+                        <div class="col-xs-8">
+                            <input name="role" value="<?php echo $DESKRIPSI; ?>" class="form-control" type="text" placeholder="Nama role" readonly>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">Tutup</button>
+                </div>
+            </div>
+            </form>
+        </div>
+    </div>
+    </div>
+<?php endforeach; ?>
+
+</html>

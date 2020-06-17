@@ -13,14 +13,6 @@ class Daftar_laporan_m extends CI_Model
             ->result_array();
     }
 
-    public function getAllLaporanyuk()
-    {
-        $this->db->select('*');
-        $this->db->from('tb_laporan');
-        $this->db->join('tb_kategori', 'tb_kategori.ID_KTR=tb_laporan.ID_KTR');
-        return $this->db->get()->result_array();
-    }
-
     // memanggil data dan membatasi data yang ditampilkan
     public function getLaporan($limit, $start, $cari = null)
     {
@@ -31,6 +23,18 @@ class Daftar_laporan_m extends CI_Model
         return $this->db->from('tb_laporan')
             ->join('tb_kategori', 'tb_kategori.ID_KTR=tb_laporan.ID_KTR') // <- join tb_kategori agar dapat menampilkan nama
             ->join('tb_user', 'tb_user.ID_USR=tb_laporan.ID_USR') // <- join tb_laporan agar dapat menampilkan nama
+            ->get('', $limit, $start)
+            ->result_array();
+    }
+
+    public function getLaporan2($limit, $start, $cari = null)
+    {
+        if ($cari) {
+            $this->db->like('LOKASI', $cari); // method pencarian berdasarkan judul
+        }
+        $this->db->order_by('ID_LPR', 'DESC');
+        return $this->db->from('tb_laporan')
+            ->join('tb_kategori', 'tb_kategori.ID_KTR=tb_laporan.ID_KTR') // <- join tb_kategori agar dapat menampilkan nama
             ->get('', $limit, $start)
             ->result_array();
     }

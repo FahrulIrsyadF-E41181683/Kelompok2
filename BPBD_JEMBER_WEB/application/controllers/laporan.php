@@ -25,7 +25,7 @@ class Laporan extends CI_Controller
             $input = [
                 'ID_LPR' => $id_lpr,
                 'ID_KTR' => $this->input->post('kategori', TRUE),
-                'NAMA' => $this->input->post('nama', TRUE),
+                'NAMA_PELAPOR' => $this->input->post('nama', TRUE),
                 'EMAIL' => $this->input->post('email', TRUE),
                 'ALAMAT' => $this->input->post('alamat', TRUE),
                 'LOKASI' => $this->input->post('lokasi', TRUE),

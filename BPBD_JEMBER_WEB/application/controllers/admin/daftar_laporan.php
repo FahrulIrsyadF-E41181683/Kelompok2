@@ -33,13 +33,10 @@ class Daftar_laporan extends CI_Controller
         // mulainya halaman
         $data['start'] = $this->uri->segment(4); // <- 4 menandakan posisi url setelah index
 
-        
-        $data['laporanAll'] = $this->daftar_laporan->getAllLaporan();
-        $data['laporanAll2'] = $this->daftar_laporan->getAllLaporanyuk();
-
         // method mengambil data dari model berita_m dan memanggil method getBerita
         $data["tb_laporan"] = $this->daftar_laporan->getLaporan($config['per_page'], $data['start'], $data['cari']);
-        // $data['laporanAll'] = $this->daftar_laporan->getAllLaporan();
+        $data["tb_laporan2"] = $this->daftar_laporan->getLaporan2($config['per_page'], $data['start'], $data['cari']);
+
         // memanggil halaman view admin/berita_v
         $this->load->view("admin/daftar_laporan_v", $data);
     }
