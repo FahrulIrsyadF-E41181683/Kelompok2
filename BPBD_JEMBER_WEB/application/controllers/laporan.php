@@ -31,7 +31,8 @@ class Laporan extends CI_Controller
                 'LOKASI' => $this->input->post('lokasi', TRUE),
                 'DESKRIPSI' => $this->input->post('deskripsi', TRUE),
                 'TANGGAL' => $this->input->post('tanggal', TRUE),
-                'STATUS' => 0
+                'STATUS' => 0,
+                'IS_READ' => 0
             ];
             // var_dump($_FILES); die;
             $uploadgambar = $_FILES['gambar']['name'];
