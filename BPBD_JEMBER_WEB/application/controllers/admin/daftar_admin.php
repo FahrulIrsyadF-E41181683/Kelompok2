@@ -110,7 +110,7 @@ class Daftar_admin extends CI_Controller
                 'NOMER' => $nomor,
                 'EMAIL' => $email,
                 'STATUS' => 1,
-                'ROLE' => 0
+                'ROLE' => 0 
             ];
             $uploadgambar = $_FILES['gambar']['name'];
             if ($uploadgambar) {

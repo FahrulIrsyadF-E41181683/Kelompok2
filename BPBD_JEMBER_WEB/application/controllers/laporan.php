@@ -29,6 +29,8 @@ class Laporan extends CI_Controller
                 'EMAIL' => $this->input->post('email', TRUE),
                 'ALAMAT' => $this->input->post('alamat', TRUE),
                 'LOKASI' => $this->input->post('lokasi', TRUE),
+                'LATITUDE' => $this->input->post('latitude', TRUE),
+                'LONGITUDE' => $this->input->post('longitude', TRUE),
                 'DESKRIPSI' => $this->input->post('deskripsi', TRUE),
                 'TANGGAL' => $this->input->post('tanggal', TRUE),
                 'STATUS' => 0,
