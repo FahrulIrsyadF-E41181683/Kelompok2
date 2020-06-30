@@ -86,3 +86,12 @@
   }
 </script>
 
+<?php if ($this->session->flashdata('flash')) : ?>
+  <script>
+    Swal.fire({
+      title: 'Pelaporan Bencana',
+      text: 'Berhasil',
+      icon: 'success'
+    })
+  </script>
+<?php endif; ?>
