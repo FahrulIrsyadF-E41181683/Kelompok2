@@ -9,6 +9,9 @@ class Daftar_admin extends CI_Controller
         $this->load->model('daftar_admin_m');
         $this->load->model('daftar_laporan_m', 'laporan');
         $this->load->model('kategori_m');
+        if (!$this->session->userdata('ID_USR')) {
+            redirect('auth');
+        }
     }
 
     public function index()
@@ -110,7 +113,7 @@ class Daftar_admin extends CI_Controller
                 'NOMER' => $nomor,
                 'EMAIL' => $email,
                 'STATUS' => 1,
-                'ROLE' => 0 
+                'ROLE' => 0
             ];
             $uploadgambar = $_FILES['gambar']['name'];
             if ($uploadgambar) {
@@ -137,7 +140,7 @@ class Daftar_admin extends CI_Controller
                 }
             }
 
-            $this->daftar_admin_m->edit_data('tb_user', $id , $data1);
+            $this->daftar_admin_m->edit_data('tb_user', $id, $data1);
 
             redirect('admin/daftar_admin');
         }
