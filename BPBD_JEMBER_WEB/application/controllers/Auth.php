@@ -57,7 +57,7 @@ class Auth extends CI_Controller
                     $this->session->set_userdata($data);
                     if ($user['ROLE'] == 1) {
                         redirect('beranda');
-                    } else {
+                    } else if ($user['ROLE'] == 0) {
                         redirect('admin/dashboard');
                     }
                 } else {
@@ -200,5 +200,14 @@ class Auth extends CI_Controller
             // redirect('auth/verif', $ver);
             $this->load->view('auth/verif_v.php', $data);
         }
+    }
+
+    public function logout()
+    {
+        $this->session->set_flashdata('flashdata', 'Dihapus');
+        //  baris kode yang akan menghapus session yang ada
+        $this->session->sess_destroy();
+        //  baris kode yang mengarahkan pengguna ke halaman beranda
+        redirect(base_url('beranda'));
     }
 }
