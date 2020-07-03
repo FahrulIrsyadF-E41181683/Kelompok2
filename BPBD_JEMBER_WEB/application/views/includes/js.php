@@ -100,7 +100,7 @@
   <script>
     Swal.fire({
       title: 'Sukses',
-      text: 'Profile berhasil diedit',
+      text: 'Profil berhasil diedit',
       icon: 'success'
     })
   </script>

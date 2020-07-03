@@ -10,7 +10,7 @@ class Kategori extends CI_Controller
         $this->load->model('kategori_m');
         $this->load->model('daftar_laporan_m', 'laporan');
         if (!$this->session->userdata('ID_USR')) {
-            redirect('auth');
+            redirect('Auth');
         }
     }
 
@@ -19,7 +19,11 @@ class Kategori extends CI_Controller
         $data['tb'] = $this->kategori_m->tampil_data();
         $data['notif'] = $this->laporan->getLaporanUnread()->result_array();
         $data['notifcount'] = $this->laporan->getLaporanUnread()->num_rows();
+        $data['role'] = $this->session->userdata('ROLE');
         // memanggil halaman view admin/dashboard_v
+        $this->load->view("admin/includes/head", $data);
+        $this->load->view("admin/includes/sidebar", $data);
+        $this->load->view("admin/includes/navbar", $data);
         $this->load->view("admin/kategori_v", $data);
     }
 
@@ -27,13 +31,16 @@ class Kategori extends CI_Controller
     {
         $kategori = $this->input->post('kategori');
         $deskripsi = $this->input->post('desk_kategori');
-
+        $data['role'] = $this->session->userdata('ROLE');
         $data['tb'] = $this->kategori_m->tampil_data();
         $data['notif'] = $this->laporan->getLaporanUnread()->result_array();
         $data['notifcount'] = $this->laporan->getLaporanUnread()->num_rows();
         $this->form_validation->set_rules('kategori', 'Kategori', 'trim|required');
         $this->form_validation->set_rules('desk_kategori', 'Deskripsi Kategori', 'trim|required');
         if ($this->form_validation->run() == false) {
+            $this->load->view("admin/includes/head", $data);
+            $this->load->view("admin/includes/sidebar", $data);
+            $this->load->view("admin/includes/navbar", $data);
             $this->load->view("admin/tambah_kategori_v", $data);
         } else {
             $id = $this->kategori_m->getIdKategori();
@@ -43,7 +50,7 @@ class Kategori extends CI_Controller
                 'KETERANGAN' => $deskripsi
             ];
             $this->kategori_m->input_data($data, 'tb_kategori');
-            redirect('admin/kategori');
+            redirect('admin/Kategori');
         }
     }
 
@@ -51,7 +58,7 @@ class Kategori extends CI_Controller
     {
         $kategori = $this->input->post('kategori');
         $deskripsi = $this->input->post('desk_kategori');
-
+        $data['role'] = $this->session->userdata('ROLE');
         $data['kategori'] = $this->kategori_m->getDataById($id);
         $data['tb'] = $this->kategori_m->tampil_data();
         $data['notif'] = $this->laporan->getLaporanUnread()->result_array();
@@ -59,6 +66,9 @@ class Kategori extends CI_Controller
         $this->form_validation->set_rules('kategori', 'Kategori', 'trim|required');
         $this->form_validation->set_rules('desk_kategori', 'Deskripsi Kategori', 'trim|required');
         if ($this->form_validation->run() == false) {
+            $this->load->view("admin/includes/head", $data);
+            $this->load->view("admin/includes/sidebar", $data);
+            $this->load->view("admin/includes/navbar", $data);
             $this->load->view("admin/tambah_kategori_v", $data);
         } else {
             $data = [
@@ -66,13 +76,13 @@ class Kategori extends CI_Controller
                 'KETERANGAN' => $deskripsi
             ];
             $this->kategori_m->update_data(['ID_KTR' => $id], $data, 'tb_kategori');
-            redirect('admin/kategori');
+            redirect('admin/Kategori');
         }
     }
 
     public function hapus($id)
     {
         $this->kategori_m->hapus_data(['ID_KTR' => $id], 'tb_kategori');
-        redirect('admin/kategori');
+        redirect('admin/Kategori');
     }
 }

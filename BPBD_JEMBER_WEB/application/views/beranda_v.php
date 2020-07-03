@@ -78,7 +78,7 @@
                 <div class="col-md-12 p-5 text-center">
                     <h3 class="text-white">Terjadi Bencana di sekitar anda?</h3>
                     <h5 class="text-white mt-3">Segera hubungi atau laporkan bencana tersebut sebelum terlambat! klik tombol dibawah ini untuk melaporkan bencana</h5>
-                    <a type="button" class="btn btn-info mt-4 text-white">Lapor Bencana</a>
+                    <a type="button" class="btn btn-info mt-4 text-white" href="<?= base_url('laporan'); ?>">Lapor Bencana</a>
                 </div>
             </div>
         </div>

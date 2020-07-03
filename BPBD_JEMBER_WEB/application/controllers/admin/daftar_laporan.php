@@ -10,7 +10,7 @@ class Daftar_laporan extends CI_Controller
         $this->load->model('daftar_laporan_m', 'daftar_laporan'); // <- berita digunakan untuk merubah/alias dari berita_m jadi cukup menuliskan berita
         $this->load->model('daftar_laporan_m', 'laporan');
         if (!$this->session->userdata('ID_USR')) {
-            redirect('auth');
+            redirect('Auth');
         }
     }
 
@@ -40,11 +40,14 @@ class Daftar_laporan extends CI_Controller
         // method mengambil data dari model berita_m dan memanggil method getBerita
         $data["tb_laporan"] = $this->daftar_laporan->getLaporan($config['per_page'], $data['start'], $data['cari']);
         $data["tb_laporan2"] = $this->daftar_laporan->getLaporan2($config['per_page'], $data['start'], $data['cari']);
-
+        $data['role'] = $this->session->userdata('ROLE');
         $data['notif'] = $this->laporan->getLaporanUnread()->result_array();
         $data['notifcount'] = $this->laporan->getLaporanUnread()->num_rows();
 
         // memanggil halaman view admin/berita_v
+        $this->load->view("admin/includes/head", $data);
+        $this->load->view("admin/includes/sidebar", $data);
+        $this->load->view("admin/includes/navbar", $data);
         $this->load->view("admin/daftar_laporan_v", $data);
     }
 
@@ -53,7 +56,7 @@ class Daftar_laporan extends CI_Controller
     {
         $this->daftar_laporan->hapusDataLaporan($ID_LPR);
         $this->session->set_flashdata('flash', 'Dihapus');
-        redirect('admin/daftar_laporan');
+        redirect('admin/Daftar_laporan');
     }
 
     // merubah status data berita
@@ -61,6 +64,6 @@ class Daftar_laporan extends CI_Controller
     {
         $this->daftar_laporan->statusDataLaporan($ID_LPR, $STATUS);
         $this->session->set_flashdata('flash', 'Diubah');
-        redirect('admin/daftar_laporan');
+        redirect('admin/Daftar_laporan');
     }
 }
