@@ -1916,6 +1916,58 @@ pre code {
   }
 }
 
+/* Card Comment */
+.card-comments .card-comment img {
+	height: 1.875rem;
+	width: 1.875rem;
+	float: left;
+}
+
+.img-circle {
+	border-radius: 50%;
+}
+
+.card-comments {
+	background: #f8f9fa;
+}
+
+.card-footer {
+	padding: .75rem 1.25rem;
+	background-color: rgba(231,86,9, 0.03) !important;
+	border-top: 0 solid rgba(231,86,9, .125) !important;
+}
+
+.card-comments .card-comment:first-of-type {
+	padding-top: 0;
+}
+
+.card-comments .card-comment {
+	border-bottom: 1px solid #e9ecef;
+	padding: 8px 0;
+}
+
+
+.card-comments .comment-text {
+	color: #78838e;
+	margin-left: 40px;
+}
+
+.card-comments .username {
+	color: #495057;
+	display: block;
+	font-weight: 600;
+}
+
+.card-comments .text-muted {
+	font-size: 12px;
+	font-weight: 400;
+}
+
+.text-muted {
+	color: #6c757d !important;
+}
+/* End Card Comment */
+
 .table {
   width: 100%;
   margin-bottom: 1rem;

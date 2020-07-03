@@ -93,9 +93,9 @@ class Profile extends CI_Controller {
       $data['tb_user']= $this->db->get_where('tb_user', ['EMAIL' =>
       $this->session->userdata('EMAIL')])->row_array();
         
-      $this->form_validtion->set_rules('current_password', 'Password Saat Ini', 'required|trim');
-      $this->form_validtion->set_rules('new_password1', 'Password Baru', 'required|trim|min_length[8]|matches[new_password2]');
-      $this->form_validtion->set_rules('new_password2', 'Ulangi Password', 'required|trim|min_length[8]|matches[new_password1]');
+      $this->form_validation->set_rules('current_password', 'Password Saat Ini', 'required|trim');
+      $this->form_validation->set_rules('new_password1', 'Password Baru', 'required|trim|min_length[8]|matches[new_password2]');
+      $this->form_validation->set_rules('new_password2', 'Ulangi Password', 'required|trim|min_length[8]|matches[new_password1]');
 
       if($this->form_validation->run() == false){
       // memparsing ke dalam v_changepassword 

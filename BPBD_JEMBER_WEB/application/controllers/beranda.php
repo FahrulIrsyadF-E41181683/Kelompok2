@@ -8,6 +8,7 @@ class Beranda extends CI_Controller
         parent::__construct();
         // memanggil model berita_m
         $this->load->model('berita_m', 'berita'); // <- berita digunakan untuk merubah/alias dari berita_m jadi cukup menuliskan berita
+        $this->load->model('komen_m', 'komen');
     }
 
     public function index()
@@ -125,6 +126,7 @@ class Beranda extends CI_Controller
     public function baca($ID_BRT)
     {
         $data["tb_kategori"]= $this->berita->getKategori();
+        $data['tb_komentar'] = $this->komen->getKomenAll($ID_BRT);
         $data["tb_berita_baru"] = $this->berita->getBeritaBaru(3, 0);
         $data["tb_user"] = $this->berita->getUser();
         $data["tb_berita"]= $this->berita->getBeritabyID($ID_BRT);
@@ -132,6 +134,28 @@ class Beranda extends CI_Controller
         // memanggil halaman view
         $this->load->view("baca_berita", $data);
 
+    }
+
+    function addKomen()
+    {
+        $this->load->library('user_agent');
+        $id_usr = $this->session->userdata('ID_USR');
+        $id_brt = $this->input->post('id_brt');
+        $kmn = $this->input->post('komentar');
+        $timestamp = time();
+
+        $data = [
+            'ID_USR' => $id_usr,
+            'ID_BRT' => $id_brt,
+            'KOMENTAR' => $kmn,
+            'TIMESTAMP' => $timestamp
+        ];
+
+        $this->komen->setKomen($data);
+        
+        $this->session->set_flashdata('komentar', 'Komentar berhasil di post');
+        redirect($this->agent->referrer());
+        
     }
 
 }
