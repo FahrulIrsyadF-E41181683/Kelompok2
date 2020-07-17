@@ -143,7 +143,7 @@ class Beranda extends CI_Controller
         $id_brt = $this->input->post('id_brt');
         $kmn = $this->input->post('komentar');
         $timestamp = time();
-
+        
         $data = [
             'ID_USR' => $id_usr,
             'ID_BRT' => $id_brt,
@@ -156,6 +156,29 @@ class Beranda extends CI_Controller
         $this->session->set_flashdata('komentar', 'Komentar berhasil di post');
         redirect($this->agent->referrer());
         
+    }
+
+    function replyKomen()
+    {
+        $this->load->library('user_agent');
+        $id_brt = $this->input->post('id_brt');
+        $id_usr = $this->input->post('id_usr');
+        $parent = $this->input->post('parent');
+        $kmn = $this->input->post('isikomen');
+        $timestamp = time();
+
+        $data = [
+            'ID_USR' => $id_usr,
+            'ID_BRT' => $id_brt,
+            'PARENT' => $parent,
+            'KOMENTAR' => $kmn,
+            'TIMESTAMP' => $timestamp
+        ];
+
+        $this->komen->setKomen($data);
+
+        $this->session->set_flashdata('komentar', 'Komentar berhasil di post');
+        redirect($this->agent->referrer());
     }
 
 }
